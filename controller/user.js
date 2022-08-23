@@ -3,15 +3,15 @@ const user = db.users
 
 const createUser = async(req, res) => {
     try {
-        const create = user.create({
+        const create = await user.create({
             userName: req.body.userName,
             emailId: req.body.emailId,
             phoneNo: req.body.phoneNo,
             password: req.body.password
         })
-        if (create)
+        if (create){
             res.json({ message: "User added successfully" });
-
+        }
     } catch (e) {
         console.log(e.message)
     }
@@ -19,23 +19,20 @@ const createUser = async(req, res) => {
 
 
 const getAllUsers = (req, res) => {
-    user.findAll()
-        .then((Users) => {
-            res.json({ data: Users })
-        })
+    user.findAll().then((Users) => {
+    res.json({ data: Users }) })
 }
 
 
 const findUser = (req, res) => {
-    user.findByPk(req.params.id)
-        .then((User) => { res.json({ User }) })
+    user.findByPk(req.params.id).then((User) => { res.json({ User }) })
 }
 
 
-const updateUser = (req, res) => {
+const updateUser = async(req, res) => {
     try {
         const id = req.params.id;
-        const update = user.update({
+        const update = await user.update({
             userName: req.body.userName,
             emailId: req.body.emailId,
             phoneNo: req.body.phoneNo,
@@ -50,12 +47,10 @@ const updateUser = (req, res) => {
 }
 
 
-const deleteUser = (req, res) => {
+const deleteUser = async(req, res) => {
     try {
         const id = req.params.id;
-        const delete_user = user.destroy({
-            where: { id: id },
-        })
+        const delete_user = await user.destroy({where: { id: id }})
         if (delete_user)
             res.json({ message: "User deleted!" })
     } catch (e) {
